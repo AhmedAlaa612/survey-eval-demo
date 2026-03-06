@@ -10,7 +10,7 @@ E14B9x9RNkVqAHJvJBYqa,Ground_Daily,El-Mansheya,0,tXwMswYEHusmu2vLfRPR2_Shape,tXw
 hx4EeoLjM7NJfnYrVfGvk,Ground_Daily,Al-Rahma,0,cURs_PxThe2b2znIGFxQs_Shape,cURs_PxThe2b2znIGFxQs-07:00:00,الرحمة
 2z926Q9o3YtgjyoxtMW1d,Ground_Daily,El-Mansheya,0,keUygmfQjUMNwNeSanmRs_Shape,keUygmfQjUMNwNeSanmRs-07:00:00,المنشية
 ruQq1su0J7bVhBjmIi2kw,Ground_Daily,El-Mansheya,0,_xaRNY3_AfOnhpf5yTE3A_Shape,_xaRNY3_AfOnhpf5yTE3A-07:00:00,المنشية
-eW27jXPyPLkZFOoF5g9lr,Ground_Daily,Train Station (El-Shohada Square),1,kKR0i-pEBtj87zRv8vRz5_Shape,kKR0i-pEBtj87zRv8vRz5-07:00:00,محطة القطار (ميدان الشهداء)
+eW27jXPyPLkZFOoF5g9lr,Ground_Daily,Train Station (El-Shohada Square),1,kKR0i-pEBtj87zRv8vRz5_Shape,kKR0i-pEBtj87zRv8vRz5-07:00:00,محطة مصر
 o8mSXE7IgJWToUsU4NnFr,Ground_Daily,El-Mansheya,0,40rOFL2qzN26P2ty7q_b9_Shape,40rOFL2qzN26P2ty7q_b9-07:00:00,المنشية
 FaHumA7HIyjyuC7E4M1jZ,Ground_Daily,El-Mansheya,0,nnllgPNq1yuc-OXURFNAG_Shape,nnllgPNq1yuc-OXURFNAG-07:00:00,المنشية
 ndixtJMAJzaQiITLSzYz_,Ground_Daily,Al-Seyouf (Falaky),1,tl8ZQbvleCGCbWdgkRkZg_Shape,tl8ZQbvleCGCbWdgkRkZg-07:00:00,السيوف (فلكي)
@@ -52,22 +52,22 @@ BKzwbCqAolUfyoXfpTwIC,Ground_Daily,El-Sa'ah (Clock Square),1,tL1NRyqKwJOCmUECmIQ
 KNOT7t80YXwsfYupjUiTk,Ground_Daily,Hanuvil,0,6OIx6bTrieeeSM5cAiCs-_Shape,6OIx6bTrieeeSM5cAiCs--07:00:00,هانوفيل
 dzTiXNOiyKbSpiehbFk-a,Ground_Daily,Hanuvil,0,xxgi7P3OGoDShZ0IAQUyL_Shape,xxgi7P3OGoDShZ0IAQUyL-07:00:00,هانوفيل
 8CWoTtootKoeWNjoE5oOP,Ground_Daily,Hanuvil,0,QyDZF4yDNAntbYpYmjfxj_Shape,QyDZF4yDNAntbYpYmjfxj-07:00:00,هانوفيل
-QcjXCusjL37XD0vtFPM_z,Ground_Daily,Train Station (El-Shohada Square),0,K1fkkoXPyuSsmQKdjzWHd_Shape,K1fkkoXPyuSsmQKdjzWHd-07:00:00,محطة القطار (ميدان الشهداء)
-dzTiXNOiyKbSpiehbFk-a,Ground_Daily,Train Station (El-Shohada Square),1,zZPK942_z42ZWwqb9a3ED_Shape,zZPK942_z42ZWwqb9a3ED-07:00:00,محطة القطار (ميدان الشهداء)
-EvMcmidrqDryWEcBEqdU2,Ground_Daily,Train Station (El-Shohada Square),0,x4ViZBh3xZ7dXQ23JVcoJ_Shape,x4ViZBh3xZ7dXQ23JVcoJ-07:00:00,محطة القطار (ميدان الشهداء)
-EqpMMSAPpyyeIs0OPJu7A,Ground_Daily,Train Station (El-Shohada Square),0,FUo5FExiKwUTpyTUJYA7R_Shape,FUo5FExiKwUTpyTUJYA7R-07:00:00,محطة القطار (ميدان الشهداء)
-V-tNyPwMd_7j2AAdXrBPe,Ground_Daily,Train Station (El-Shohada Square),0,WWP7DCP2cjGJxPZSN68Y2_Shape,WWP7DCP2cjGJxPZSN68Y2-07:00:00,محطة القطار (ميدان الشهداء)
-wk7z0bHFULyZrQtvEvO1X,Ground_Daily,Train Station (El-Shohada Square),1,yKUP1GAjkqmvJPLe6dDUV_Shape,yKUP1GAjkqmvJPLe6dDUV-07:00:00,محطة القطار (ميدان الشهداء)
+QcjXCusjL37XD0vtFPM_z,Ground_Daily,Train Station (El-Shohada Square),0,K1fkkoXPyuSsmQKdjzWHd_Shape,K1fkkoXPyuSsmQKdjzWHd-07:00:00,محطة مصر
+dzTiXNOiyKbSpiehbFk-a,Ground_Daily,Train Station (El-Shohada Square),1,zZPK942_z42ZWwqb9a3ED_Shape,zZPK942_z42ZWwqb9a3ED-07:00:00,محطة مصر
+EvMcmidrqDryWEcBEqdU2,Ground_Daily,Train Station (El-Shohada Square),0,x4ViZBh3xZ7dXQ23JVcoJ_Shape,x4ViZBh3xZ7dXQ23JVcoJ-07:00:00,محطة مصر
+EqpMMSAPpyyeIs0OPJu7A,Ground_Daily,Train Station (El-Shohada Square),0,FUo5FExiKwUTpyTUJYA7R_Shape,FUo5FExiKwUTpyTUJYA7R-07:00:00,محطة مصر
+V-tNyPwMd_7j2AAdXrBPe,Ground_Daily,Train Station (El-Shohada Square),0,WWP7DCP2cjGJxPZSN68Y2_Shape,WWP7DCP2cjGJxPZSN68Y2-07:00:00,محطة مصر
+wk7z0bHFULyZrQtvEvO1X,Ground_Daily,Train Station (El-Shohada Square),1,yKUP1GAjkqmvJPLe6dDUV_Shape,yKUP1GAjkqmvJPLe6dDUV-07:00:00,محطة مصر
 d1tk5YD606wPnGF4CLm4i,Ground_Daily,El-Mawqaf El-Geded,0,APpubImR-DQ7ipx8VqTDi_Shape,APpubImR-DQ7ipx8VqTDi-07:00:00,الموقف الجديد
-2HEouGQcgjyXwlsq69h3S,Ground_Daily,Train Station (El-Shohada Square),1,9iBvMMprqaal91Eesle9O_Shape,9iBvMMprqaal91Eesle9O-07:00:00,محطة القطار (ميدان الشهداء)
-SqToUMEw-z1wSe52v0JGh,Ground_Daily,Train Station (El-Shohada Square),1,4QUtLrt9QqoQBADynOzAM_Shape,4QUtLrt9QqoQBADynOzAM-07:00:00,محطة القطار (ميدان الشهداء)
-p2DY4x4NaqXRC1gG9cwiY,Ground_Daily,Train Station (El-Shohada Square),1,fdkp3odv3VaA2gaEksu3i_Shape,fdkp3odv3VaA2gaEksu3i-07:00:00,محطة القطار (ميدان الشهداء)
-w5lnA7aOkl9RbW6RzoEdG,Ground_Daily,Train Station (El-Shohada Square),0,GK-B6ExLThapIsC2LwCU5_Shape,GK-B6ExLThapIsC2LwCU5-07:00:00,محطة القطار (ميدان الشهداء)
-0fV-oHdZjqIXEVAq-5E7b,Ground_Daily,Train Station (El-Shohada Square),0,t2ZpJUKX5uFrXD9bfRgqq_Shape,t2ZpJUKX5uFrXD9bfRgqq-07:00:00,محطة القطار (ميدان الشهداء)
-ujMXATExhhRj9qgxcopKv,Ground_Daily,Train Station (El-Shohada Square),1,oL-cc2-4cc5VXM7r-ShUc_Shape,oL-cc2-4cc5VXM7r-ShUc-07:00:00,محطة القطار (ميدان الشهداء)
-z2W-2EVP76_5pF_4R0HbR,Ground_Daily,Train Station (El-Shohada Square),1,pQ45GdSgOyF1CMHTWPmrk_Shape,pQ45GdSgOyF1CMHTWPmrk-07:00:00,محطة القطار (ميدان الشهداء)
-Rx10-oSKyoIJDvbVd1Py3,Ground_Daily,Train Station (El-Shohada Square),1,hCtxqlnqMmikZr4cnUgjF_Shape,hCtxqlnqMmikZr4cnUgjF-07:00:00,محطة القطار (ميدان الشهداء)
-EYuJpRuohnv2M2djd0oRb,Ground_Daily,Train Station (El-Shohada Square),1,eZVkbWyfsnRxGOMkDoSfl_Shape,eZVkbWyfsnRxGOMkDoSfl-07:00:00,محطة القطار (ميدان الشهداء)
+2HEouGQcgjyXwlsq69h3S,Ground_Daily,Train Station (El-Shohada Square),1,9iBvMMprqaal91Eesle9O_Shape,9iBvMMprqaal91Eesle9O-07:00:00,محطة مصر
+SqToUMEw-z1wSe52v0JGh,Ground_Daily,Train Station (El-Shohada Square),1,4QUtLrt9QqoQBADynOzAM_Shape,4QUtLrt9QqoQBADynOzAM-07:00:00,محطة مصر
+p2DY4x4NaqXRC1gG9cwiY,Ground_Daily,Train Station (El-Shohada Square),1,fdkp3odv3VaA2gaEksu3i_Shape,fdkp3odv3VaA2gaEksu3i-07:00:00,محطة مصر
+w5lnA7aOkl9RbW6RzoEdG,Ground_Daily,Train Station (El-Shohada Square),0,GK-B6ExLThapIsC2LwCU5_Shape,GK-B6ExLThapIsC2LwCU5-07:00:00,محطة مصر
+0fV-oHdZjqIXEVAq-5E7b,Ground_Daily,Train Station (El-Shohada Square),0,t2ZpJUKX5uFrXD9bfRgqq_Shape,t2ZpJUKX5uFrXD9bfRgqq-07:00:00,محطة مصر
+ujMXATExhhRj9qgxcopKv,Ground_Daily,Train Station (El-Shohada Square),1,oL-cc2-4cc5VXM7r-ShUc_Shape,oL-cc2-4cc5VXM7r-ShUc-07:00:00,محطة مصر
+z2W-2EVP76_5pF_4R0HbR,Ground_Daily,Train Station (El-Shohada Square),1,pQ45GdSgOyF1CMHTWPmrk_Shape,pQ45GdSgOyF1CMHTWPmrk-07:00:00,محطة مصر
+Rx10-oSKyoIJDvbVd1Py3,Ground_Daily,Train Station (El-Shohada Square),1,hCtxqlnqMmikZr4cnUgjF_Shape,hCtxqlnqMmikZr4cnUgjF-07:00:00,محطة مصر
+EYuJpRuohnv2M2djd0oRb,Ground_Daily,Train Station (El-Shohada Square),1,eZVkbWyfsnRxGOMkDoSfl_Shape,eZVkbWyfsnRxGOMkDoSfl-07:00:00,محطة مصر
 q-9QC-QKVmhqbVh9htKhg,Ground_Daily,Victoria station,1,WZZbrVYSieTbnoHnb0AaQ_Shape,WZZbrVYSieTbnoHnb0AaQ-07:00:00,محطة فيكتوريا
 4xf9KaKYJRkSlWjtAzeER,Ground_Daily,Victoria station,0,o9FR1QzxiDSovwQlc0MKb_Shape,o9FR1QzxiDSovwQlc0MKb-07:00:00,محطة فيكتوريا
 KNOT7t80YXwsfYupjUiTk,Ground_Daily,El-Mawqaf El-Geded,1,dLkT29EUoWOal9hGBCA4x_Shape,dLkT29EUoWOal9hGBCA4x-07:00:00,الموقف الجديد
@@ -140,7 +140,7 @@ Rx10-oSKyoIJDvbVd1Py3,Ground_Daily,Abu Youssef,0,BxVJu5Cu3SBv6k6JEotw3_Shape,BxV
 _RCpDqcLlmzJHSPPy8bli,Ground_Daily,Raml Station,0,znJ4UDxPXmPvAbkcg1zot_Shape,znJ4UDxPXmPvAbkcg1zot-07:00:00,محطة الرمل
 pIaHBI4j1KA7mIDUenoKC,Ground_Daily,Abd El-Qader Al-Gadida,0,_roD5BmPMzsusHgRuqc29_Shape,_roD5BmPMzsusHgRuqc29-07:00:00,عبد القادر الجديدة
 T6BRc19d7TrtHQroCLymy,Ground_Daily,Hanuvil Gameyya,0,o1-MNGEnaLwUnghnqO6JK_Shape,o1-MNGEnaLwUnghnqO6JK-07:00:00,هانوفيل الجمعية
-LrIznn0Nk3YYvE6SV4NT_,Ground_Daily,Train Station (El-Shohada Square),1,3JTmhQmnxSU9cPkJSaSlE_Shape,3JTmhQmnxSU9cPkJSaSlE-07:00:00,محطة القطار (ميدان الشهداء)
+LrIznn0Nk3YYvE6SV4NT_,Ground_Daily,Train Station (El-Shohada Square),1,3JTmhQmnxSU9cPkJSaSlE_Shape,3JTmhQmnxSU9cPkJSaSlE-07:00:00,محطة مصر
 LrIznn0Nk3YYvE6SV4NT_,Ground_Daily,Asafra,0,divI9MoAnOSksgYUNogFE_Shape,divI9MoAnOSksgYUNogFE-07:00:00,العصافرة
 hx4EeoLjM7NJfnYrVfGvk,Ground_Daily,El-Awayed,1,FOMSNPsGQO4s6Y-BM_cpQ_Shape,FOMSNPsGQO4s6Y-BM_cpQ-07:00:00,العوايد
 o7ehON1F_k7JHoHJOQYGh,Ground_Daily,El-Sa'ah (Clock Square),0,1qykx9U9w6xm1N6GqnR-i_Shape,1qykx9U9w6xm1N6GqnR-i-07:00:00,الساعة (ميدان الساعة)
@@ -149,10 +149,10 @@ VqsKdXjc_nTkIE8PZUK7V,Ground_Daily,Asafra,0,OVbnm1WLeW59vl_wEqm66_Shape,OVbnm1WL
 RSdPdtwiGzlvedMSUpA36,Ground_Daily,El-Awayed,1,8wpT6YlGJmfsskCDg8AJT_Shape,8wpT6YlGJmfsskCDg8AJT-07:00:00,العوايد
 T7uwVnYTnWKajNK7K5gyj,Ground_Daily,El-Sa'ah (Clock Square),1,wNQ0rq7CAxb57IWuH3MiT_Shape,wNQ0rq7CAxb57IWuH3MiT-07:00:00,الساعة (ميدان الساعة)
 9Ge1SSHI5IgHaGIK61A7q,Ground_Daily,El-Sa'ah (Clock Square),1,0eMropKVlaFEwtKn18KiF_Shape,0eMropKVlaFEwtKn18KiF-07:00:00,الساعة (ميدان الساعة)
-VqsKdXjc_nTkIE8PZUK7V,Ground_Daily,Train Station (El-Shohada Square),1,GVMY3J8hLKwB3k_XzZZNA_Shape,GVMY3J8hLKwB3k_XzZZNA-07:00:00,محطة القطار (ميدان الشهداء)
-pIaHBI4j1KA7mIDUenoKC,Ground_Daily,Train Station (El-Shohada Square),1,nilFxlyYPYNiAZui3Rdkw_Shape,nilFxlyYPYNiAZui3Rdkw-07:00:00,محطة القطار (ميدان الشهداء)
+VqsKdXjc_nTkIE8PZUK7V,Ground_Daily,Train Station (El-Shohada Square),1,GVMY3J8hLKwB3k_XzZZNA_Shape,GVMY3J8hLKwB3k_XzZZNA-07:00:00,محطة مصر
+pIaHBI4j1KA7mIDUenoKC,Ground_Daily,Train Station (El-Shohada Square),1,nilFxlyYPYNiAZui3Rdkw_Shape,nilFxlyYPYNiAZui3Rdkw-07:00:00,محطة مصر
 XQFjzrlmVSDo00hpPwPD9,Ground_Daily,Hanuvil,0,q5Lba_fHFYAVYTctbEVvL_Shape,q5Lba_fHFYAVYTctbEVvL-07:00:00,هانوفيل
-djf-0ENVceYNg5x6O7HGq,Ground_Daily,Train Station (El-Shohada Square),1,vDSOGaI-kcPGIccVzFiRw_Shape,vDSOGaI-kcPGIccVzFiRw-07:00:00,محطة القطار (ميدان الشهداء)
+djf-0ENVceYNg5x6O7HGq,Ground_Daily,Train Station (El-Shohada Square),1,vDSOGaI-kcPGIccVzFiRw_Shape,vDSOGaI-kcPGIccVzFiRw-07:00:00,محطة مصر
 8ExRMTw-r4JAqxk8WGljD,Ground_Daily,Al-Seyouf (Falaky),1,E3cKTAI5hrMdq3gv0l-3g_Shape,E3cKTAI5hrMdq3gv0l-3g-07:00:00,السيوف (فلكي)
 8ExRMTw-r4JAqxk8WGljD,Ground_Daily,Anfoshy,0,bAHUtWeGgy-NzZiHpbdim_Shape,bAHUtWeGgy-NzZiHpbdim-07:00:00,الأنفوشي
 oepuTc06iN5U0ZwjmqZIj,Ground_Daily,El-Mawqaf El-Geded,0,oVe9NWCir7yf4YumOIYpG_Shape,oVe9NWCir7yf4YumOIYpG-07:00:00,الموقف الجديد
@@ -183,8 +183,8 @@ llujnjcOUaGBRa_Jecss3,Ground_Daily,El-Awayed,0,S0va0RZjlnA1UM5ngCuy9_Shape,S0va0
 D7IwqxPBMcEQiGv3sjC3s,Ground_Daily,El-Awayed,0,3RevHK5a3aJRhrnXG0U-Y_Shape,3RevHK5a3aJRhrnXG0U-Y-07:00:00,العوايد
 1Ctgvye_a8bTjvozOsfEX,Ground_Daily,El-Awayed,1,Q_48FGPRTjaYgRz2H28V3_Shape,Q_48FGPRTjaYgRz2H28V3-07:00:00,العوايد
 S8t0ygpYGRBLHfPC3bjJm,Ground_Daily,El-Awayed,1,w6teBIa3rLtCothzEDZKi_Shape,w6teBIa3rLtCothzEDZKi-07:00:00,العوايد
-nl0Bhq5jfJUhmpghbnEaV,Ground_Daily,Train Station (El-Shohada Square),1,iGgUl6NwJYqGWhVkUHdiu_Shape,iGgUl6NwJYqGWhVkUHdiu-07:00:00,محطة القطار (ميدان الشهداء)
-2sefONCZ5v5w4bCF1ybYX,Ground_Daily,Train Station (El-Shohada Square),1,pCUExpIx94RHG6BGAhT6a_Shape,pCUExpIx94RHG6BGAhT6a-07:00:00,محطة القطار (ميدان الشهداء)
+nl0Bhq5jfJUhmpghbnEaV,Ground_Daily,Train Station (El-Shohada Square),1,iGgUl6NwJYqGWhVkUHdiu_Shape,iGgUl6NwJYqGWhVkUHdiu-07:00:00,محطة مصر
+2sefONCZ5v5w4bCF1ybYX,Ground_Daily,Train Station (El-Shohada Square),1,pCUExpIx94RHG6BGAhT6a_Shape,pCUExpIx94RHG6BGAhT6a-07:00:00,محطة مصر
 hMo27Nx4A3lFCdh0tNdmf,Ground_Daily,Bahary (Ras Al-Tin),1,Z-51SkRkO5YyfPeYNTS-n_Shape,Z-51SkRkO5YyfPeYNTS-n-07:00:00,بحري (رأس التين)
 EWmI2x176BtYHecDIWm2H,Ground_Daily,Bahary (Ras Al-Tin),1,vGWP0NAWQ2WwsR_DTpmn9_Shape,vGWP0NAWQ2WwsR_DTpmn9-07:00:00,بحري (رأس التين)
 7vCDYOyx9Gj6RZuCS5Igi,Ground_Daily,Abu Qir,0,RmCIDxJQKwF7GOCKKX3Oh_Shape,RmCIDxJQKwF7GOCKKX3Oh-07:00:00,أبو قير

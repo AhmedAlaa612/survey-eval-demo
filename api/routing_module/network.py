@@ -109,20 +109,20 @@ def load_traffic_data(traffic_file=None):
 
 def load_distance_data(distance_file=None):
     """
-    Load trip distance data.
+    Load per-stop cumulative distance data (prefixdistances.json).
     
     Args:
-        distance_file: Path to the distance CSV file
+        distance_file: Path to the prefix distances JSON file
         
     Returns:
-        Dictionary mapping trip_id to distance_km
+        Dictionary: { trip_id: { stop_id: cumulative_meters, ... }, ... }
     """
     if distance_file is None:
-        distance_file = os.path.join(os.path.dirname(__file__), 'data', 'utils', 'trip_distances.csv')
-    dist_df = pd.read_csv(distance_file)
-    trip_distance = dict(zip(dist_df["trip_id"], dist_df["distance_km"]))
-    print(f"Loaded distance data for {len(trip_distance)} trips")
-    return trip_distance
+        distance_file = os.path.join(os.path.dirname(__file__), 'data', 'prefixdistances.json')
+    with open(distance_file, 'r') as f:
+        distance_data = json.load(f)
+    print(f"Loaded prefix distance data for {len(distance_data)} trips")
+    return distance_data
 
 
 def build_shape_data(gtfs_data):
@@ -318,7 +318,7 @@ def create_network(osm_file=None, gtfs_path=None, pathways_file=None, model_file
         pathways_file: Path to pathways CSV (defaults to data/trip_pathways.csv)
         model_file: Path to cost model file (defaults to data/utils/trip_price_model.joblib)
         traffic_file: Path to traffic JSON file (defaults to data/prefixtimes.json)
-        distance_file: Path to distance CSV file (defaults to data/utils/trip_distances.csv)
+        distance_file: Path to prefix distances JSON (defaults to data/prefixdistances.json)
         
     Returns:
         Dictionary containing all network data needed for routing:

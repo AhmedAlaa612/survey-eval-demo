@@ -84,7 +84,6 @@ function LocationPicker({ label, value, onChange }) {
       <div ref={mapRef} className="map-container" />
       {value && (
         <div className="location-display">
-          <span className="icon">📍</span>
           {value.lat}, {value.lng}
         </div>
       )}
@@ -125,11 +124,11 @@ function SearchSection({
       <div className="card">
         <form onSubmit={handleSubmit} className="search-form">
           <LocationPicker
-            label="📌 مكانك فين"
+            label=" مكانك فين"
             value={start}
             onChange={setStart}
           />
-          <LocationPicker label="🏁 رايح فين" value={dest} onChange={setDest} />
+          <LocationPicker label=" رايح فين" value={dest} onChange={setDest} />
           {!searched && !noRoutesInfo && (
             <button
               type="submit"
@@ -151,21 +150,22 @@ function SearchSection({
             المشي
           </p>
           <div className="walking-cutoff-group">
-            <label className="field-label">مسافة المشي القصوى (بالمتر)</label>
+            <label className="field-label">
+              مسافة المشي القصوى: {walkingCutoff} متر
+            </label>
             <input
-              type="number"
+              type="range"
               min={500}
               max={5000}
               step={100}
               value={walkingCutoff}
-              onChange={(e) => {
-                const v = Number(e.target.value);
-                if (v >= 500 && v <= 5000) setWalkingCutoff(v);
-                else if (e.target.value === "") setWalkingCutoff("");
-              }}
-              className="input walking-input"
+              onChange={(e) => setWalkingCutoff(Number(e.target.value))}
+              className="walking-slider"
             />
-            <span className="walking-range-hint">500 – 5000 متر</span>
+            <div className="walking-range-hint">
+              <span>500 متر</span>
+              <span>5000 متر</span>
+            </div>
           </div>
           <button
             className={`btn-primary${canSearch ? "" : " disabled"}`}
@@ -173,7 +173,7 @@ function SearchSection({
               if (canSearch) onRetry();
             }}
           >
-            {loading ? "Searching…" : "جرب تاني 🔄"}
+            {loading ? "Searching…" : "جرب تاني "}
           </button>
         </div>
       )}
@@ -505,11 +505,12 @@ function OverallFeedbackSection({ overallFeedback, setOverallFeedback }) {
 
         <div>
           <label className="field-label">
-            لو عندك أي تعليق إضافي عن النتائج اكتبّه هنا (اختياري):
+            لو عندك أي تعليق إضافي عن النتائج او مشوارك مكنش في النتايج اكتبّه
+            هنا :
           </label>
           <textarea
             rows={3}
-            placeholder="e.g. Missing a metro-only option, prices seem high…"
+            placeholder="مثال: في  العادي بركب مشروع المنشية-محطة مصر وده مكنش في النتايج"
             value={overallFeedback.comments || ""}
             onChange={(e) => update({ comments: e.target.value })}
             className="textarea"
@@ -525,7 +526,6 @@ function OverallFeedbackSection({ overallFeedback, setOverallFeedback }) {
 function ThankYou() {
   return (
     <div className="thank-you">
-      <div className="thank-you-icon">🎉</div>
       <h2>Thank You!</h2>
       <p>Your feedback has been recorded.</p>
     </div>

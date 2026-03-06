@@ -84,7 +84,7 @@ class RouteRequest(BaseModel):
     end_lat: float = Field(..., example=31.2156)
     end_lon: float = Field(..., example=29.9553)
     max_transfers: int = Field(3, ge=0, le=5)
-    walking_cutoff: int = Field(1200, ge=100, le=5000, description="Max walking distance in meters")
+    walking_cutoff: int = Field(1500, ge=100, le=5000, description="Max walking distance in meters")
     top_k: int = Field(5, ge=1, le=20)
     restricted_modes: list[str] = Field(default_factory=list, description="Agency IDs to exclude")
     weight_time: float = Field(0.2, ge=0, le=1)
@@ -134,7 +134,7 @@ def find_routes_get(
     end_lat: float,
     end_lon: float,
     max_transfers: int = 3,
-    walking_cutoff: int = 1200,
+    walking_cutoff: int = 1500,
     top_k: int = 5,
 ):
     """Convenience GET endpoint with just the essentials."""
@@ -160,7 +160,7 @@ class TestResponse(BaseModel):
     status: str = "success"                 # "success" | "no_routes" | "error"
     error: Optional[str] = None
     api_response: Optional[dict] = None     # raw API response (for error/no-route cases)
-    walking_cutoff: int = 1200
+    walking_cutoff: int = 1500
     journeys_with_feedback: Optional[list] = None  # journeys array with user feedback merged in
     overallFeedback: Optional[dict] = None
 
@@ -168,6 +168,50 @@ class TestResponse(BaseModel):
 class FeedbackPayload(BaseModel):
     userCode: str
     responses: list[TestResponse]
+
+
+@app.get("/api/admin/responses")
+def get_all_responses():
+    """Return all eval_tests rows for the admin dashboard."""
+    if not db_available():
+        raise HTTPException(503, "Database not configured")
+
+    try:
+        conn = get_db_conn()
+        cur = conn.cursor()
+        cur.execute(
+            """
+            SELECT id, user_code, test_number,
+                   start_lat, start_lng, dest_lat, dest_lng,
+                   walking_cutoff, status, error_message,
+                   api_response, journeys_with_feedback, overall_feedback,
+                   created_at
+            FROM eval_tests
+            ORDER BY created_at DESC
+            """
+        )
+        cols = [desc[0] for desc in cur.description]
+        rows = []
+        for row in cur.fetchall():
+            r = dict(zip(cols, row))
+            # Parse JSON strings back to dicts/lists
+            for key in ("api_response", "journeys_with_feedback", "overall_feedback"):
+                if isinstance(r.get(key), str):
+                    try:
+                        r[key] = json.loads(r[key])
+                    except Exception:
+                        pass
+            # Serialize datetime
+            if r.get("created_at"):
+                r["created_at"] = r["created_at"].isoformat()
+            rows.append(r)
+
+        cur.close()
+        conn.close()
+        return {"responses": rows}
+    except Exception as e:
+        logger.error("Admin fetch failed: %s", e)
+        raise HTTPException(502, f"Failed to fetch responses: {e}")
 
 
 @app.post("/api/submit-feedback")

@@ -1,4 +1,5 @@
 import osmnx as ox
+import networkx as nx
 import heapq
 import math
 import ast
@@ -31,7 +32,7 @@ class RoutingEngine:
         print(f"  - OSM graph: {len(self.graph.nodes)} nodes")
         print(f"  - Trip graph: {len(self.trip_graph)} starting trips")
         print(f"  - Lookup tables: {len(self.lookups)} dictionaries")
-        print(f"  - Cost model: {len(self.distance_data)} trip distances")
+        print(f"  - Distance data: {len(self.distance_data)} trips (prefix distances)")
         print(f"  - Shape data: {len(self.shape_data.get('shape_points', {}))} shapes")
 
     def explore_trips(self, source, cutoff=1000.0):
@@ -173,8 +174,13 @@ class RoutingEngine:
         return points[start_idx:end_idx + 1]
 
     def get_distance(self, trip_id, start_stop, end_stop):
-        """Get distance for a trip (uses precomputed data)"""
-        return self.distance_data.get(trip_id, 0)
+        """Get segment distance in km between two stops (uses prefix distances)."""
+        trip_data = self.distance_data.get(trip_id, {})
+        if not isinstance(trip_data, dict):
+            return 0
+        start_m = trip_data.get(str(start_stop), 0)
+        end_m = trip_data.get(str(end_stop), 0)
+        return abs(end_m - start_m) / 1000  # convert meters to km
 
     def get_fare(self, trip_id, start_stop, end_stop, agency='P_O_14'):
         """Calculate fare using precomputed model"""
@@ -447,56 +453,50 @@ class RoutingEngine:
         # Sort by score and return top N
         ranked_results = sorted(scored_results, key=lambda x: x[3])[:top_n]
         return [(trip_path, total_costs, cost_details) for trip_path, total_costs, cost_details, _ in ranked_results]
-
-    def enrich_journey_results(self, routing_results, start_trips, target_trips):
+    
+    def enrich_journey_results(self, routing_results, start_trips, target_trips, top_k=5):
         """
         Transform routing results into frontend-ready JSON structure.
+        Merges journeys that share the same stops/mode but differ only by trip_id,
+        then builds text summaries showing alternatives (أو).
         """
-        detailed_journeys = []
-        
-        for journey_idx, (trip_path, total_costs, cost_details) in enumerate(routing_results):
-            
+        arabic_stop = lambda sid: self.lookups.get('stop_to_name_ar', {}).get(sid, self.lookups.get('stop_to_name', {}).get(sid, ''))
+        arabic_route = lambda rid: self.lookups.get('route_to_short_name_ar', {}).get(rid, self.lookups.get('route_to_short_name', {}).get(rid, ''))
+        arabic_headsign = lambda tid: self.lookups.get('trip_to_headsign_ar', {}).get(tid, self.lookups.get('trip_to_headsign', {}).get(tid, ''))
+
+        # --- Step 1: Build raw journey objects ---
+        raw_journeys = []
+        for trip_path, total_costs, cost_details in routing_results:
             transfers, total_fare, total_time, total_walk = total_costs
-            
             legs = []
             modes_used = set()
-            
-            # Initial walking leg
-            start_trip_id = trip_path[0]
-            start_trip_data = start_trips[start_trip_id]
-            
-            if start_trip_data['walk'] > 0:
+
+            # Initial walk
+            start_data = start_trips[trip_path[0]]
+            if start_data['walk'] > 0:
                 legs.append({
                     "type": "walk",
-                    "distance_meters": round(start_trip_data['walk']),
-                    "duration_minutes": max(1, math.ceil(start_trip_data['walk'] / 83.33)),
-                    "path": start_trip_data['path']
+                    "distance_meters": round(start_data['walk']),
+                    "duration_minutes": max(1, math.ceil(start_data['walk'] / 83.33)),
+                    "path": start_data['path']
                 })
-            
-            # Process legs using preserved cost details
+
             for detail in cost_details:
                 if detail['type'] == 'trip':
                     route_id = self.lookups['trip_to_route'].get(detail['trip_id'])
                     route_short_name = self.lookups['route_to_short_name'].get(route_id)
-                    
-                    # Extract mode from route name
                     if route_short_name:
                         mode = re.sub(r'\d+', '', route_short_name).strip().lower()
                         mode = ' '.join(mode.split())
                     else:
                         mode = "unknown"
                     modes_used.add(mode)
-                    
-                    # Get stop coordinates
+
                     from_coords = self.lookups['stop_to_coords'].get(detail['from_stop_id'], {})
                     to_coords = self.lookups['stop_to_coords'].get(detail['to_stop_id'], {})
-                    
-                    # Get the shape path for this trip segment
-                    trip_shape_path = self.get_trip_shape_path(
-                        detail['trip_id'], detail['from_stop_id'], detail['to_stop_id']
-                    )
-                    
-                    trip_leg = {
+                    trip_shape_path = self.get_trip_shape_path(detail['trip_id'], detail['from_stop_id'], detail['to_stop_id'])
+
+                    legs.append({
                         "type": "trip",
                         "trip_id": detail['trip_id'],
                         "mode": mode,
@@ -515,12 +515,10 @@ class RoutingEngine:
                             "coord": [to_coords.get('stop_lat', 0), to_coords.get('stop_lon', 0)]
                         },
                         "path": trip_shape_path
-                    }
-                    legs.append(trip_leg)
-                    
+                    })
+
                 elif detail['type'] == 'transfer':
                     pathway = detail['pathway']
-                    
                     walking_coords = []
                     if pathway.get('walking_path_coords'):
                         try:
@@ -530,10 +528,8 @@ class RoutingEngine:
                                 walking_coords = pathway['walking_path_coords']
                         except:
                             walking_coords = []
-                    
-                    transfer_duration = max(1, int(detail['walking_distance_m'] / 83.33))
-                    
-                    transfer_leg = {
+
+                    legs.append({
                         "type": "transfer",
                         "from_trip_id": detail['from_trip_id'],
                         "to_trip_id": detail['to_trip_id'],
@@ -541,82 +537,164 @@ class RoutingEngine:
                         "to_trip_name": pathway.get('end_route_name', 'Unknown'),
                         "end_stop_id": pathway.get('end_stop_id', ''),
                         "walking_distance_meters": round(detail['walking_distance_m']),
-                        "duration_minutes": transfer_duration,
+                        "duration_minutes": max(1, int(detail['walking_distance_m'] / 83.33)),
                         "path": walking_coords
-                    }
-                    legs.append(transfer_leg)
-            
-            # Final walking leg
-            final_trip_id = trip_path[-1]
-            final_walk = target_trips[final_trip_id]['walk']
-            
+                    })
+
+            # Final walk
+            final_walk = target_trips[trip_path[-1]]['walk']
             if final_walk > 0:
                 legs.append({
                     "type": "walk",
                     "distance_meters": round(final_walk),
                     "duration_minutes": max(1, math.ceil(final_walk / 83.33)),
-                    "path": target_trips[final_trip_id]['path']
+                    "path": target_trips[trip_path[-1]]['path']
                 })
-            
-            # Build journey summary
-            total_distance = total_walk
-            total_duration_minutes = math.ceil(total_time / 60)
-            
-            # Create Egyptian Arabic text summary
-            summary_parts = []
-            arabic_stop = lambda stop_id: self.lookups.get('stop_to_name_ar', {}).get(stop_id, self.lookups.get('stop_to_name', {}).get(stop_id, ''))
-            arabic_headsign = lambda trip_id: self.lookups.get('trip_to_headsign_ar', {}).get(trip_id, self.lookups.get('trip_to_headsign', {}).get(trip_id, ''))
-            arabic_route = lambda route_id: self.lookups.get('route_to_short_name_ar', {}).get(route_id, self.lookups.get('route_to_short_name', {}).get(route_id, ''))
 
-            # Initial walking leg
-            leg_idx = 0
-            for leg in legs:
-                if leg['type'] == 'walk':
-                    if leg_idx == 0:
-                        # First walk
-                        summary_parts.append(f"امشي لغايه {arabic_stop(start_trip_data['stop_id']) if 'stop_id' in start_trip_data else ''}")
-                    else:
-                        # Final walk
-                        summary_parts.append(f"وتمشي لغايه وجهتك")
-                elif leg['type'] == 'trip':
-                    route_id = self.lookups['trip_to_route'].get(leg['trip_id'])
-                    route_ar = arabic_route(route_id)
-                    headsign_ar = arabic_headsign(leg['trip_id'])
-                    from_stop_ar = arabic_stop(leg['from']['stop_id'])
-                    to_stop_ar = arabic_stop(leg['to']['stop_id'])
-                    summary_parts.append(f"وتركب {route_ar} {headsign_ar} لغايه {to_stop_ar}")
-                elif leg['type'] == 'transfer':
-                    to_trip = leg.get('to_trip_id')
-                    next_route_id = self.lookups['trip_to_route'].get(to_trip)
-                    next_route_ar = arabic_route(next_route_id)
-                    transfer_stop_id = leg.get('end_stop_id', '')
-                    transfer_stop_ar = arabic_stop(transfer_stop_id)
-                    if next_route_ar or transfer_stop_ar:
-                        summary_parts.append(f"وبعدين تمشي لغايه {transfer_stop_ar}")
-                leg_idx += 1
-
-            text_summary = " ".join([part for part in summary_parts if part.strip()])
-            
-            journey = {
-                "id": journey_idx + 1,
-                "text_summary": text_summary,
+            raw_journeys.append({
                 "summary": {
-                    "total_time_minutes": total_duration_minutes,
-                    "total_distance_meters": int(total_distance),
+                    "total_time_minutes": math.ceil(total_time / 60),
+                    "total_distance_meters": int(total_walk),
                     "walking_distance_meters": int(total_walk),
                     "transfers": transfers,
                     "cost": round(total_fare, 2),
                     "modes": sorted(list(modes_used))
                 },
                 "legs": legs
-            }
-            
-            detailed_journeys.append(journey)
-        
+            })
+
+        # --- Step 2: Deduplicate (merge journeys with same stop/mode pattern) ---
+        def leg_signature(leg):
+            if leg['type'] == 'walk':
+                return ('walk', round(leg['distance_meters'], -1))
+            elif leg['type'] == 'trip':
+                return ('trip', leg['from']['stop_id'], leg['to']['stop_id'], leg['mode'])
+            elif leg['type'] == 'transfer':
+                return ('transfer', leg.get('end_stop_id'))
+
+        seen = {}
+        merged = []
+        for journey in raw_journeys:
+            sig = tuple(leg_signature(l) for l in journey['legs'])
+            if sig not in seen:
+                for leg in journey['legs']:
+                    if leg['type'] == 'trip':
+                        leg['trip_ids'] = [leg['trip_id']]
+                        leg['_fares'] = [leg['fare']]
+                seen[sig] = len(merged)
+                merged.append(journey)
+            else:
+                existing = merged[seen[sig]]
+                for leg, ex_leg in zip(journey['legs'], existing['legs']):
+                    if leg['type'] == 'trip' and leg['trip_id'] not in ex_leg['trip_ids']:
+                        ex_leg['trip_ids'].append(leg['trip_id'])
+                        ex_leg['_fares'].append(leg['fare'])
+
+        # Finalize fares
+        for journey in merged:
+            total_fare = 0
+            for leg in journey['legs']:
+                if leg['type'] == 'trip':
+                    leg['fare'] = round(sum(leg['_fares']) / len(leg['_fares']))
+                    total_fare += leg['fare']
+                    del leg['_fares']
+            journey['summary']['cost'] = total_fare
+
+        # --- Step 3: Build text summaries with alternatives ---
+        for idx, journey in enumerate(merged):
+            parts = []
+            legs = journey['legs']
+            for i, leg in enumerate(legs):
+                if leg['type'] == 'walk':
+                    if i == 0:
+                        next_trip = next((l for l in legs[i+1:] if l['type'] == 'trip'), None)
+                        stop_name = arabic_stop(next_trip['from']['stop_id']) if next_trip else ''
+                        parts.append(f"امشي لغايه {stop_name}")
+                    else:
+                        parts.append("وتمشي لغايه وجهتك")
+
+                elif leg['type'] == 'trip':
+                    trip_ids = leg.get('trip_ids', [leg['trip_id']])
+                    to_stop_ar = arabic_stop(leg['to']['stop_id'])
+
+                    # Unique route names
+                    route_names = list(dict.fromkeys(
+                        arabic_route(self.lookups['trip_to_route'].get(tid))
+                        for tid in trip_ids
+                        if arabic_route(self.lookups['trip_to_route'].get(tid))
+                    ))
+                    # Unique headsigns
+                    headsigns = list(dict.fromkeys(
+                        arabic_headsign(tid) for tid in trip_ids if arabic_headsign(tid)
+                    ))
+
+                    if len(route_names) > 1:
+                        parts.append(f"وتركب ({' أو '.join(route_names)}) لغايه {to_stop_ar}")
+                    elif len(headsigns) > 1:
+                        mode_name = route_names[0] if route_names else ''
+                        parts.append(f"وتركب {mode_name} ({' أو '.join(headsigns)}) لغايه {to_stop_ar}")
+                    elif route_names:
+                        hs = headsigns[0] if headsigns else ''
+                        parts.append(f"وتركب {route_names[0]} {hs} لغايه {to_stop_ar}")
+                    else:
+                        parts.append(f"وتركب لغايه {to_stop_ar}")
+
+                elif leg['type'] == 'transfer':
+                    stop_ar = arabic_stop(leg.get('end_stop_id', ''))
+                    if stop_ar:
+                        parts.append(f"وبعدين تمشي لغايه {stop_ar}")
+
+            journey['text_summary'] = " ".join(p for p in parts if p.strip())
+            journey['id'] = idx + 1
+
+        merged = merged[:top_k]
         return {
-            "num_journeys": len(detailed_journeys),
-            "journeys": detailed_journeys
+            "num_journeys": len(merged),
+            "journeys": merged
         }
+
+    def build_walking_journey(self, start_node, end_node, walking_cutoff):
+        """
+        Build a direct walking journey between two OSM nodes if within cutoff.
+        
+        Args:
+            start_node: OSM node ID for the origin
+            end_node: OSM node ID for the destination
+            walking_cutoff: Maximum walking distance in meters
+            
+        Returns:
+            Journey dict ready for the frontend, or None if not walkable within cutoff
+        """
+        try:
+            walk_length = nx.shortest_path_length(self.graph, start_node, end_node, weight='length')
+            if walk_length > walking_cutoff:
+                return None
+            walk_path_nodes = nx.shortest_path(self.graph, start_node, end_node, weight='length')
+            walk_coords = [
+                [self.graph.nodes[n]['y'], self.graph.nodes[n]['x']]
+                for n in walk_path_nodes if n in self.graph.nodes
+            ]
+            walk_time_minutes = max(1, math.ceil(walk_length / 83.33))
+            return {
+                "id": 1,
+                "text_summary": "\u0627\u0645\u0634\u064a \u0644\u063a\u0627\u064a\u0647 \u0648\u062c\u0647\u062a\u0643",
+                "summary": {
+                    "total_time_minutes": walk_time_minutes,
+                    "total_distance_meters": round(walk_length),
+                    "walking_distance_meters": round(walk_length),
+                    "transfers": 0,
+                    "cost": 0,
+                    "modes": ["walking"]
+                },
+                "legs": [{
+                    "type": "walk",
+                    "distance_meters": round(walk_length),
+                    "duration_minutes": walk_time_minutes,
+                    "path": walk_coords
+                }]
+            }
+        except nx.NetworkXNoPath:
+            return None
 
     def find_journeys(self, start_lat, start_lon, end_lat, end_lon, 
                      max_transfers=2, walking_cutoff=1000,
@@ -645,11 +723,22 @@ class RoutingEngine:
         start_node = ox.distance.nearest_nodes(self.graph, X=start_lon, Y=start_lat)
         end_node = ox.distance.nearest_nodes(self.graph, X=end_lon, Y=end_lat)
         
+        # Check if direct walking is possible within cutoff
+        walking_journey = self.build_walking_journey(start_node, end_node, walking_cutoff)
+        
         start_trips = self.explore_trips(start_node, cutoff=walking_cutoff)
         target_trips = self.explore_trips(end_node, cutoff=walking_cutoff)
         
         # Check if we found trips
         if not start_trips:
+            if walking_journey:
+                return {
+                    "num_journeys": 1,
+                    "journeys": [walking_journey],
+                    "error": None,
+                    "start_trips_found": 0,
+                    "end_trips_found": len(target_trips)
+                }
             return {
                 "num_journeys": 0,
                 "journeys": [],
@@ -659,6 +748,14 @@ class RoutingEngine:
             }
         
         if not target_trips:
+            if walking_journey:
+                return {
+                    "num_journeys": 1,
+                    "journeys": [walking_journey],
+                    "error": None,
+                    "start_trips_found": len(start_trips),
+                    "end_trips_found": 0
+                }
             return {
                 "num_journeys": 0,
                 "journeys": [],
@@ -673,6 +770,14 @@ class RoutingEngine:
         )
         
         if not routing_results:
+            if walking_journey:
+                return {
+                    "num_journeys": 1,
+                    "journeys": [walking_journey],
+                    "error": None,
+                    "start_trips_found": len(start_trips),
+                    "end_trips_found": len(target_trips)
+                }
             return {
                 "num_journeys": 0,
                 "journeys": [],
@@ -681,13 +786,21 @@ class RoutingEngine:
                 "end_trips_found": len(target_trips)
             }
         
-        # 3. Rank results
+        # 3. Rank results (over-fetch so dedup doesn't lose unique journeys)
         ranked_results = self.rank_routing_results(
-            routing_results, weights, top_k
+            routing_results, weights, top_k * 3
         )
         
-        # 4. Enrich for frontend
-        final_results = self.enrich_journey_results(ranked_results, start_trips, target_trips)
+        # 4. Enrich, deduplicate, and trim to top_k
+        final_results = self.enrich_journey_results(ranked_results, start_trips, target_trips, top_k)
+        
+        # 5. Prepend direct walking journey if available
+        if walking_journey:
+            final_results['journeys'].insert(0, walking_journey)
+            # Re-number journey IDs
+            for i, j in enumerate(final_results['journeys']):
+                j['id'] = i + 1
+            final_results['num_journeys'] = len(final_results['journeys'])
         
         # Add metadata
         final_results.update({
