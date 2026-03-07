@@ -95,6 +95,10 @@ class RouteRequest(BaseModel):
 
 # --- Endpoints ---
 
+@app.get("/")
+def root():
+    return {"status": "running"}
+    
 @app.get("/api/health")
 def health():
     return {"status": "ok", "engine_loaded": routing_engine is not None}
