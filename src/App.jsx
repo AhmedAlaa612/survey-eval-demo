@@ -708,15 +708,37 @@ export default function App() {
           <ThankYou />
         ) : (
           <>
+            {/* Info Note */}
+            <div style={{ marginBottom: 28 }}>
+              <div
+                className="card"
+                style={{
+                  backgroundColor: "#f0f4ff",
+                  borderLeft: "4px solid #4f6ef7",
+                }}
+              >
+                <p
+                  style={{
+                    margin: 0,
+                    color: "#333",
+                    lineHeight: 1.6,
+                    fontSize: "15px",
+                  }}
+                >
+                  التطبيق لسه بيتطور — رأيك هيساعدنا نضيف المواصلات الناقصة ونصلح اللي محتاج تحسين
+                </p>
+              </div>
+            </div>
+
             {/* User Code */}
             <div style={{ marginBottom: 28 }}>
               <SectionHeader
                 number={0}
-                title="الكود الخاص بيك"
-                subtitle="دخّل الكود اللي اخترته في الفورم"
+                title="username"
+                subtitle="دخّل اللقب اللي اخترته في الفورم"
               />
               <div className="card">
-                <label className="field-label">الكود</label>
+                <label className="field-label">اللقب</label>
                 <input
                   type="text"
                   placeholder="مثلاً: MARO123"
